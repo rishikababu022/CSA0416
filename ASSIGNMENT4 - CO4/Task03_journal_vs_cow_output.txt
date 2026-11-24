@@ -1,0 +1,11 @@
+Block writes per 4 KiB random update (lower is better)
+    c | data=journal data=ordered data=writeback          CoW
+    1 |         6.03         5.03           5.03         4.00
+    4 |         3.03         2.03           2.03         1.75
+   16 |         2.28         1.28           1.28         1.19
+   64 |         2.09         1.09           1.09         1.05
+
+Extra space (CoW): checksums 4 B per 4 KiB block = 0.098%; each snapshot keeps only
+blocks changed since it was taken (O(changed blocks)), old blocks are freed on delete.
+Recovery after power failure: ext4 replays the journal, time O(journal size, e.g. 128 MiB-1 GiB);
+CoW mounts the last committed root, O(1) (plus an optional intent-log replay in ZFS).

@@ -1,0 +1,22 @@
+== Capacity ==
+videos 5000 x average 1.15 GB = 5.75 TB raw
+x3 replicas (2 on-premise + 1 cloud copy) = 17.25 TB; with 20% free space on-premise: 14.38 TB
+
+== Throughput ==
+bit-rate 4 Mbit/s = 0.50 MB/s per stream
+peak concurrent viewers (10% of 200000) = 20000
+aggregate = 10000 MB/s = 10.0 GB/s = 80 Gbit/s
+HDD: one 8 MB chunk takes 66.5 ms; a stream needs one every 16000 ms -> 240 streams/disk (168 at 70% utilisation)
+without cache: 120 HDDs needed for 20000 streams
+with an assumed 85% served from SSD/RAM/CDN: 3000 HDD streams -> 18 HDDs;
+  cached streams 17000 x 0.50 MB/s = 8.5 GB/s -> 3 NVMe SSDs at 3 GB/s (N+1 extra)
+network: 80 Gbit/s / 50 Gbit/s per server (2 x 25 GbE) = 2 servers (+1 spare)
+
+== Disk reads to start playing at minute m of a 2 GB video (4 KiB blocks) ==
+  minute   block number     classic indirect inode   extent tree (ext4/XFS)
+       0              0                    1 reads 1 (cached) to 2 reads
+       1           7324                    3 reads 1 (cached) to 2 reads
+      10          73242                    3 reads 1 (cached) to 2 reads
+      60         439453                    3 reads 1 (cached) to 2 reads
+(an extent tree needs at most one extent-index read for a 2 GB file of 16 extents of 128 MiB,
+ then one data read; the 4 MB start-up buffer is then 1 sequential read of 1024 blocks)

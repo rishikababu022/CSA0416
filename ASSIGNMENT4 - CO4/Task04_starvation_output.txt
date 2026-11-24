@@ -1,0 +1,3 @@
+SSTF : request at 183 NOT served in 20000 ms; 19900 requests served, 107 still queued (183 has waited 20001 ms) -> starvation
+SCAN : request at 183 served at t = 63.6 ms (after 39 other requests)
+LOOK : request at 183 served at t = 55.8 ms (after 34 other requests)

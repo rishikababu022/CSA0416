@@ -1,0 +1,56 @@
+== Directory tree ==
+Task01_demo
+Task01_demo/backup
+Task01_demo/dropbox
+Task01_demo/home
+Task01_demo/home/CSE
+Task01_demo/home/CSE/2024
+Task01_demo/home/CSE/2024/CSE2024001
+Task01_demo/home/CSE/2024/CSE2024001/documents
+Task01_demo/home/CSE/2024/CSE2024001/projects
+Task01_demo/home/CSE/2024/CSE2024001/projects/OS-Group-7
+Task01_demo/home/CSE/2024/CSE2024002
+Task01_demo/home/CSE/2024/CSE2024002/documents
+Task01_demo/home/CSE/2024/CSE2024002/projects
+Task01_demo/home/CSE/2024/CSE2024002/projects/OS-Group-7
+Task01_demo/home/CSE/2025
+Task01_demo/home/CSE/2025/CSE2025001
+Task01_demo/home/CSE/2025/CSE2025001/documents
+Task01_demo/home/CSE/2025/CSE2025001/projects
+Task01_demo/home/CSE/2025/CSE2025002
+Task01_demo/home/CSE/2025/CSE2025002/documents
+Task01_demo/home/CSE/2025/CSE2025002/projects
+Task01_demo/home/ECE
+Task01_demo/home/ECE/2024
+Task01_demo/home/ECE/2024/ECE2024001
+Task01_demo/home/ECE/2024/ECE2024001/documents
+Task01_demo/home/ECE/2024/ECE2024001/projects
+Task01_demo/home/ECE/2024/ECE2024002
+Task01_demo/home/ECE/2024/ECE2024002/documents
+Task01_demo/home/ECE/2024/ECE2024002/projects
+Task01_demo/home/ECE/2025
+Task01_demo/home/ECE/2025/ECE2025001
+Task01_demo/home/ECE/2025/ECE2025001/documents
+Task01_demo/home/ECE/2025/ECE2025001/projects
+Task01_demo/home/ECE/2025/ECE2025002
+Task01_demo/home/ECE/2025/ECE2025002/documents
+Task01_demo/home/ECE/2025/ECE2025002/projects
+Task01_demo/projects
+Task01_demo/projects/OS-Group-7
+Task01_demo/projects/OS-Group-7/report_v01.txt
+
+== Permissions of key directories ==
+dr-x------ 2 root root 4096 Nov 24 15:28 Task01_demo/backup
+drwx-wx-wt 2 root root 4096 Nov 24 15:28 Task01_demo/dropbox
+drwx------ 4 root root 4096 Nov 24 15:28 Task01_demo/home/CSE/2024/CSE2024001
+drwxrws--- 2 root root 4096 Nov 24 15:28 Task01_demo/projects/OS-Group-7
+
+== Link to shared project ==
+total 0
+lrwxrwxrwx 1 root root 31 Nov 24 15:28 OS-Group-7 -> ../../../../projects/OS-Group-7
+
+== Naming rule: <regno>_<course>_<title>_v<NN>.<ext> ==
+OK     CSE2024001_CSA04_assignment4_v01.pdf
+OK     CSE2024001_CSA04_assignment4_v01.docx
+REJECT my file (final).doc
+REJECT CSE2024001_CSA04_notes_v1.txt
