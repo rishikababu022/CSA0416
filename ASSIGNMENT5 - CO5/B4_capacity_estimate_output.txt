@@ -1,0 +1,7 @@
+EXAMPLE ONLY: uses the bare-metal rate measured here (about 836 req/s at concurrency 8) for both columns.
+Replace --rps-container / --rps-vm with your own container and VM measurements.
+total requests            : 1,200,000
+average rate              : 167 requests/s
+design (peak) rate        : 500 requests/s  (peak factor 3.0)
+container       : measured 836 req/s each -> 1 needed at 70% utilisation (+1 spare = 2)
+virtual machine : measured 836 req/s each -> 1 needed at 70% utilisation (+1 spare = 2)

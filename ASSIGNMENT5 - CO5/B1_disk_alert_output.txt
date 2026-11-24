@@ -1,0 +1,6 @@
+2026-11-24 15:40:42 ALERT: /opt/claude-code (/dev/vdc) is 94% full (used 379M of 415M, 28M free)
+exit=1
+2026-11-24 15:40:42 ALERT: / (/dev/vda) is 29% full (used 13G of 252G, 31G free)
+2026-11-24 15:40:42 ALERT: /opt/claude-code (/dev/vdc) is 94% full (used 379M of 415M, 28M free)
+2026-11-24 15:40:42 ALERT: /opt/env-runner (/dev/vdd) is 68% full (used 32M of 49M, 16M free)
+exit(threshold 1, forced alert)=1

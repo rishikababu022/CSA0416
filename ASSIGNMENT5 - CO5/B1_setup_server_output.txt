@@ -1,0 +1,16 @@
++ groupadd --system portal
++ useradd --system --gid portal --home-dir /opt/portal --shell /usr/sbin/nologin portal
++ install -d -o portal -g portal /opt/portal /var/log/portal
++ install -m 644 app.py requirements.txt /opt/portal/
++ python3 -m venv /opt/portal/venv
++ /opt/portal/venv/bin/pip install -r /opt/portal/requirements.txt
++ install -m 644 B1_portal.service /etc/systemd/system/portal.service
++ install -m 644 B1_nginx_portal.conf /etc/nginx/sites-available/portal
++ ln -sf /etc/nginx/sites-available/portal /etc/nginx/sites-enabled/portal
++ install -m 755 B1_log_summary.sh B1_disk_alert.sh /opt/portal/
++ install -m 644 B1_portal.logrotate /etc/logrotate.d/portal
++ systemctl daemon-reload
++ systemctl enable --now portal
++ nginx -t
++ systemctl reload nginx
++ systemctl status portal --no-pager

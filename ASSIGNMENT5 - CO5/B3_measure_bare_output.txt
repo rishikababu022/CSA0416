@@ -1,0 +1,22 @@
+### start-up time
+ready after 0.08 s
+### memory right after start (RSS, KiB)
+32812
+### load: concurrency 1, 10 s
+url=http://127.0.0.1:8000/result/ABC123 concurrency=1 duration=10.0s
+requests=9626 errors=0 requests_per_second=962.6
+latency_ms mean=1.0 p50=1.0 p95=1.3 p99=1.7 max=3.3
+### load: concurrency 8, 10 s
+url=http://127.0.0.1:8000/result/ABC123 concurrency=8 duration=10.0s
+requests=8366 errors=0 requests_per_second=836.6
+latency_ms mean=9.6 p50=9.4 p95=12.7 p99=14.8 max=20.8
+### load: concurrency 32, 10 s
+url=http://127.0.0.1:8000/result/ABC123 concurrency=32 duration=10.0s
+requests=8105 errors=0 requests_per_second=810.5
+latency_ms mean=39.5 p50=39.3 p95=47.6 p99=51.7 max=59.2
+### memory after load (RSS, KiB)
+33452
+### disk used by the application
+8 KiB (app files)
+python packages (flask and dependencies):
+2836 KiB
