@@ -1,0 +1,26 @@
+=== Worst-case delay of the time-critical loop (3 runs each) ===
+NOLOCK  iterations 20000: average 1405 ns, median 1420 ns, 99.9% 35352 ns, WORST CASE 342266 ns (342.3 us), page faults inside loop: 16425 minor, 0 major
+NOLOCK  iterations 20000: average 1302 ns, median 1378 ns, 99.9% 25722 ns, WORST CASE 105827 ns (105.8 us), page faults inside loop: 16425 minor, 0 major
+NOLOCK  iterations 20000: average 1307 ns, median 1397 ns, 99.9% 29126 ns, WORST CASE 59218 ns (59.2 us), page faults inside loop: 16425 minor, 0 major
+LOCKED  iterations 20000: average 113 ns, median 90 ns, 99.9% 585 ns, WORST CASE 29783 ns (29.8 us), page faults inside loop: 1 minor, 0 major
+LOCKED  iterations 20000: average 110 ns, median 87 ns, 99.9% 605 ns, WORST CASE 40731 ns (40.7 us), page faults inside loop: 1 minor, 0 major
+LOCKED  iterations 20000: average 104 ns, median 79 ns, 99.9% 658 ns, WORST CASE 36703 ns (36.7 us), page faults inside loop: 1 minor, 0 major
+
+=== Simulation: three tasks (control 64 MB locked, ML 1.5 GB, logger 100 MB) ===
+RAM 2048 MB, OS reserved 200 MB, usable 1848 MB, locked RT 64 MB, demand of tasks 1700 MB (fits)
+task                     references  page faults fault rate
+control (RT, locked)        1202043            0    0.0000%
+machine learning            1198569         1536    0.1282%
+logging                      599388          100    0.0167%
+evictions: 0
+VERIFIED: the real-time task suffered 0 page faults.
+
+=== Simulation: with a fourth task of 500 MB ===
+RAM 2048 MB, OS reserved 200 MB, usable 1848 MB, locked RT 64 MB, demand of tasks 2200 MB (EXCEEDS usable memory -> replacement of file-backed pages needed)
+task                     references  page faults fault rate
+control (RT, locked)        1201912            0    0.0000%
+machine learning            1198821        54847    4.5751%
+logging                      299764          100    0.0334%
+extra task                   299503        20557    6.8637%
+evictions: 73720
+VERIFIED: the real-time task suffered 0 page faults.

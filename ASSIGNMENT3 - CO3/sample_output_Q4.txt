@@ -1,0 +1,65 @@
+=== Q4 EAT, maximum fault rate, frame allocation ===
+== Effective access time: EAT = (1-p)*100 + p*8,000,000 ns ==
+p = 1 in 1,000      EAT =    8099.90 ns   slow-down =    7999.9%  (81.0x)
+p = 1 in 100,000    EAT =     180.00 ns   slow-down =      80.0%  (1.8x)
+p = 1 in 1,000,000  EAT =     108.00 ns   slow-down =       8.0%  (1.1x)
+
+Max page-fault rate for a 10% slow-down (EAT <= 110 ns): p <= 10 / (8,000,000 - 100) = 1.250e-06 = 1 fault per 799990 accesses
+
+== Frame allocation: 62 free frames, processes of 10 and 127 pages ==
+equal allocation        : 31 and 31 frames
+proportional allocation : 10 x 62 / 137 = 4.53 -> 4 and 127 x 62 / 137 = 57.47 -> 57 frames
+
+== Alternative: 32 GB RAM, no paging to disk (rate measured by Q4_touch is used in the README) ==
+EAT with no faults = 100 ns; with p=1e-5: 180.0 ns; cost of extra RAM must be compared with the run-time saving.
+
+=== Sequential vs random touching, growing memory ===
+free memory:
+               total        used        free      shared  buff/cache   available
+Mem:            3991         221        3853          12          81        3770
+--- 32 MB ---
+size 32 MB = 8192 pages of 4096 B
+pass                    time(s)        minor        major      ns/page
+sequential pass 1 (first touch)   0.0117         8194            0       1430.5
+sequential pass 2        0.0001            0            0         17.0
+random     pass 1 (first touch)   0.0114         8192            0       1386.6
+random     pass 2        0.0002            0            0         19.1
+--- 128 MB ---
+size 128 MB = 32768 pages of 4096 B
+pass                    time(s)        minor        major      ns/page
+sequential pass 1 (first touch)   0.0560        32770            0       1709.2
+sequential pass 2        0.0007            0            0         21.5
+random     pass 1 (first touch)   0.0502        32768            0       1533.5
+random     pass 2        0.0009            0            0         27.8
+--- 512 MB ---
+size 512 MB = 131072 pages of 4096 B
+pass                    time(s)        minor        major      ns/page
+sequential pass 1 (first touch)   0.2619       131074            0       1997.9
+sequential pass 2        0.0036            0            0         27.6
+random     pass 1 (first touch)   0.2096       131072            0       1599.2
+random     pass 2        0.0032            0            0         24.5
+(To exceed RAM: run in a VM or: systemd-run --user --scope -p MemoryMax=512M -p MemorySwapMax=2G ./Q4_touch 1024 )
+
+=== Copy-on-write with fork() ===
+parent allocated and wrote 100 MB
+parent before fork:          Rss= 104140 kB  Pss= 102852 kB  Shared=   1624 kB  Private_Dirty= 102516 kB
+child right after fork:      Rss= 103220 kB  Pss=  51405 kB  Shared= 103180 kB  Private_Dirty=     40 kB
+child after writing all:     Rss= 103664 kB  Pss= 102704 kB  Shared=   1224 kB  Private_Dirty= 102440 kB
+child write loop: 0.0643 s, 25600 page faults (each one is a copy-on-write page copy)
+fork() of a 100 MB process took 1.424 ms (no page was copied at fork time)
+
+=== Page faults vs frames (reference string) ===
+reference string: 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1 (20 references, 8 distinct pages)
+frames  FIFO  LRU  OPT
+     1    20   20   20
+     2    15   17   13
+     3    15   12    9
+     4    10    8    8
+     5     9    7    7
+     6     6    6    6
+     7     6    6    6
+     8     6    6    6
+written Q4_faults_vs_frames.csv
+wrote Q4_faults_vs_frames.png
+wrote Q5_faults_locality.png
+wrote Q5_faults_random.png
