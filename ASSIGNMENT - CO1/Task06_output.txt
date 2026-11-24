@@ -1,0 +1,21 @@
+buffer    1 bytes: 10001 read() calls
+buffer  512 bytes:    21 read() calls
+buffer 4096 bytes:     4 read() calls
+file = 1 MB
+ buffer(B)   read calls    time(s)
+         1      1048576     0.4116
+        16        65536     0.0260
+        64        16384     0.0090
+       512         2048     0.0027
+      4096          256     0.0014
+     65536           16     0.0019
+   1048576            1     0.0015
+file = 16 MB
+ buffer(B)   read calls    time(s)
+         1      skipped          -
+        16      1048576     0.4259
+        64       262144     0.1102
+       512        32768     0.0417
+      4096         4096     0.0214
+     65536          256     0.0314
+   1048576           16     0.0114
