@@ -1,0 +1,5 @@
+# Install with:  crontab B1_crontab.txt      Show with:  crontab -l
+# m h dom mon dow  command
+0 * * * *    /opt/portal/B1_log_summary.sh >> /var/log/portal/log_summary.log 2>&1
+*/15 * * * * /opt/portal/B1_disk_alert.sh 80 >> /var/log/portal/disk_alert.log 2>&1
+30 2 * * *   /usr/sbin/logrotate /etc/logrotate.d/portal
