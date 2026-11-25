@@ -1,0 +1,16 @@
+Device  rotational(1=HDD,0=SSD)  scheduler
+loop0   0                        [none] mq-deadline kyber bfq 
+loop1   0                        [none] mq-deadline kyber bfq 
+loop2   0                        [none] mq-deadline kyber bfq 
+loop3   0                        [none] mq-deadline kyber bfq 
+loop4   0                        [none] mq-deadline kyber bfq 
+loop5   0                        [none] mq-deadline kyber bfq 
+loop6   0                        [none] mq-deadline kyber bfq 
+loop7   0                        [none] mq-deadline kyber bfq 
+vda     1                        none [mq-deadline] kyber bfq 
+vdb     1                        none [mq-deadline] kyber bfq 
+vdc     1                        none [mq-deadline] kyber bfq 
+vdd     1                        none [mq-deadline] kyber bfq 
+vde     1                        none [mq-deadline] kyber bfq 
+vdf     1                        none [mq-deadline] kyber bfq 
+(the scheduler in [brackets] is the active one; change with: echo mq-deadline | sudo tee /sys/block/<disk>/queue/scheduler)

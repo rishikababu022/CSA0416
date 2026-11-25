@@ -1,0 +1,1 @@
+fio is not installed (sudo apt install fio); the C simulation Task06_sim.c was used instead.

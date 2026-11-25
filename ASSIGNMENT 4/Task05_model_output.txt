@@ -1,0 +1,10 @@
+   users |   NFS read (s)  NFS write (s) |   DFS read (s)  DFS write (s)
+      10 |            0.8            1.2 |            0.1            0.4
+     100 |            8.0           12.5 |            0.8            3.8
+    1000 |           80.0          125.0 |            8.0           37.5
+    5000 |          400.0          625.0 |           40.0          187.5
+   10000 |          800.0         1250.0 |           80.0          375.0
+
+Storage for 100 TB of user data: NFS = 100 TB (1 copy) ; DFS = 300 TB (3 replicas)
+Availability of a file: NFS = 99.0000% (87.6 h/year down) ; DFS = 99.9999% (0.0088 h/year down)
+Complexity: NFS read/write of n users O(n) on one server; DFS O(n / nodes) per node, write cost O(replicas) per block, metadata via a namenode/MDS.

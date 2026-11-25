@@ -1,0 +1,80 @@
+### System
+Linux vm 6.18.44-fc-v819 #1 SMP PREEMPT_DYNAMIC @0 x86_64 x86_64 x86_64 GNU/Linux
+Ubuntu 24.04.5 LTS
+
+### df -T -h . (file system holding this directory)
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/vda       ext4  252G   13G   31G  29% /
+
+### df -i . (inode usage)
+Filesystem       Inodes  IUsed    IFree IUse% Mounted on
+/dev/vda       16777216 313990 16463226    2% /
+
+### ls -li (inode numbers)
+total 168
+1261592 -rw-r--r-- 1 root root    0 Nov 24 15:28 README.md
+1261589 -rw-r--r-- 1 root root 2185 Nov 24 15:28 Task01_create_layout.sh
+1261604 -rw-r--r-- 1 root root 2132 Nov 24 15:28 Task01_create_layout_output.txt
+1261569 -r--r--r-- 1 root root 2872 Nov 24 15:28 Task01_search_cost.c
+1261599 -rw-r--r-- 1 root root  392 Nov 24 15:28 Task01_search_cost_output.txt
+1261588 -rw------- 1 root root 2000 Nov 24 15:28 Task02_alloc.c
+1261593 -rw-r--r-- 1 root root  178 Nov 24 15:28 Task02_alloc_output.txt
+
+### stat on this script
+  File: Task03_inspect.sh
+  Size: 1377      	Blocks: 8          IO Block: 4096   regular file
+Device: 254,0	Inode: 1261570     Links: 1
+Access: (0444/-r--r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2026-11-24 15:28:17.004552130 +0530
+Modify: 2026-11-24 15:28:05.722869750 +0530
+Change: 2026-11-24 15:28:05.722869750 +0530
+ Birth: 2026-11-24 15:28:05.721459341 +0530
+
+### stat -f . (file-system level: block size, blocks, inodes)
+  File: "."
+    ID: b4539b79a281584 Namelen: 255     Type: ext2/ext3
+Block size: 4096       Fundamental block size: 4096
+Blocks: Total: 66053021   Free: 62896804   Available: 7865943
+Inodes: Total: 16777216   Free: 16463226
+
+### dumpe2fs -h Task03_demo.img
+Filesystem features:      has_journal ext_attr resize_inode dir_index filetype extent 64bit flex_bg sparse_super large_file huge_file dir_nlink extra_isize metadata_csum
+Default mount options:    user_xattr acl
+Inode count:              16384
+Block count:              16384
+Free blocks:              14319
+Free inodes:              16373
+Block size:               4096
+Inode size:	          256
+Journal inode:            8
+Journal backup:           inode blocks
+Journal features:         (none)
+Journal sequence:         0x00000001
+Journal start:            0
+
+### tune2fs -l Task03_demo.img (first lines)
+tune2fs 1.47.0 (5-Feb-2023)
+Filesystem volume name:   <none>
+Last mounted on:          <not available>
+Filesystem UUID:          81494472-7366-4460-a48e-f0d96d384ba4
+Filesystem magic number:  0xEF53
+Filesystem revision #:    1 (dynamic)
+Filesystem features:      has_journal ext_attr resize_inode dir_index filetype extent 64bit flex_bg sparse_super large_file huge_file dir_nlink extra_isize metadata_csum
+Filesystem flags:         signed_directory_hash 
+Default mount options:    user_xattr acl
+Filesystem state:         clean
+Errors behavior:          Continue
+Filesystem OS type:       Linux
+Inode count:              16384
+Block count:              16384
+Reserved block count:     819
+Overhead clusters:        2059
+Free blocks:              14319
+Free inodes:              16373
+First block:              0
+Block size:               4096
+Fragment size:            4096
+Group descriptor size:    64
+Reserved GDT blocks:      7
+Blocks per group:         32768
+Fragments per group:      32768
