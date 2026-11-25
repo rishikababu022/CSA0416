@@ -1,0 +1,88 @@
+=== Q3 segment-table translation ===
+Segment table (base, limit):
+  seg 0 code       base  1400 limit 1000
+  seg 1 stack      base  6300 limit  400
+  seg 2 data       base  4300 limit  400
+  seg 3 heap       base  3200 limit 1100
+  seg 4 shared lib base  4700 limit 1000
+
+8 addresses translated (verify by hand: base + offset if offset < limit):
+(0,  53) -> physical 1400 + 53 = 1453  [code]
+(1, 852) -> TRAP: offset 852 >= limit 400 of segment 1 (stack) -> addressing error, OS terminates process
+(2,   0) -> physical 4300 + 0 = 4300  [data]
+(3,1099) -> physical 3200 + 1099 = 4299  [heap]
+(3,1100) -> TRAP: offset 1100 >= limit 1100 of segment 3 (heap) -> addressing error, OS terminates process
+(4, 999) -> physical 4700 + 999 = 5699  [shared lib]
+(2, 399) -> physical 4300 + 399 = 4699  [data]
+(1, 400) -> TRAP: offset 400 >= limit 400 of segment 1 (stack) -> addressing error, OS terminates process
+  extra: (7,   5) -> TRAP: invalid segment number
+
+Segmentation with paging:
+logical (segment base 0x08048000, offset 0x1234): linear = 0x08049234 -> directory index 32, page-table index 73, page offset 0x234
+   physical = frame(PDE[32] -> PT[73]) * 4096 + 0x234   (two extra memory accesses unless the TLB hits)
+logical (segment base 0xBF000000, offset 0xFFC): linear = 0xBF000FFC -> directory index 764, page-table index 0, page offset 0xFFC
+   physical = frame(PDE[764] -> PT[0]) * 4096 + 0xFFC   (two extra memory accesses unless the TLB hits)
+
+=== Segments of a running Linux program (/proc/<pid>/maps) ===
+pid 8666
+code  (fn)            0x564e564cb229
+rodata            0x564e564cc008
+data  (initialized)   0x564e564ce010
+bss   (uninit)        0x564e564ce024
+heap  (malloc 1MB)    0x7f5ab88ff010
+stack (local)         0x7fffa9e78674
+
+564e564ca000-564e564cb000 r--p 00000000 fe:00 434223                     /home/claude/pkg/Q3_maps
+564e564cb000-564e564cc000 r-xp 00001000 fe:00 434223                     /home/claude/pkg/Q3_maps
+564e564cc000-564e564cd000 r--p 00002000 fe:00 434223                     /home/claude/pkg/Q3_maps
+564e564cd000-564e564ce000 r--p 00002000 fe:00 434223                     /home/claude/pkg/Q3_maps
+564e564ce000-564e564cf000 rw-p 00003000 fe:00 434223                     /home/claude/pkg/Q3_maps
+564e77020000-564e77041000 rw-p 00000000 00:00 0                          [heap]
+7f5ab88ff000-7f5ab8a00000 rw-p 00000000 00:00 0 
+7f5ab8a00000-7f5ab8a28000 r--p 00000000 fe:00 115719                     /usr/lib/x86_64-linux-gnu/libc.so.6
+7f5ab8a28000-7f5ab8bb1000 r-xp 00028000 fe:00 115719                     /usr/lib/x86_64-linux-gnu/libc.so.6
+7f5ab8bb1000-7f5ab8c00000 r--p 001b1000 fe:00 115719                     /usr/lib/x86_64-linux-gnu/libc.so.6
+7f5ab8c00000-7f5ab8c04000 r--p 001ff000 fe:00 115719                     /usr/lib/x86_64-linux-gnu/libc.so.6
+7f5ab8c04000-7f5ab8c06000 rw-p 00203000 fe:00 115719                     /usr/lib/x86_64-linux-gnu/libc.so.6
+7f5ab8c06000-7f5ab8c13000 rw-p 00000000 00:00 0 
+7f5ab8c21000-7f5ab8c24000 rw-p 00000000 00:00 0 
+7f5ab8c31000-7f5ab8c33000 rw-p 00000000 00:00 0 
+7f5ab8c33000-7f5ab8c37000 r--p 00000000 00:00 0                          [vvar]
+7f5ab8c37000-7f5ab8c39000 r--p 00000000 00:00 0                          [vvar_vclock]
+7f5ab8c39000-7f5ab8c3b000 r-xp 00000000 00:00 0                          [vdso]
+7f5ab8c3b000-7f5ab8c3c000 r--p 00000000 fe:00 115279                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f5ab8c3c000-7f5ab8c67000 r-xp 00001000 fe:00 115279                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f5ab8c67000-7f5ab8c71000 r--p 0002c000 fe:00 115279                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f5ab8c71000-7f5ab8c73000 r--p 00036000 fe:00 115279                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f5ab8c73000-7f5ab8c75000 rw-p 00038000 fe:00 115279                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fffa9e59000-7fffa9e7a000 rw-p 00000000 00:00 0                          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+=== Segmentation faults ===
+--- null ---
+writing to NULL...
+./Q3_run.sh: line 7:  8670 Segmentation fault      ./Q3_segfault $m
+exit status 139 (139 = 128 + SIGSEGV(11))
+--- write ---
+writing into read-only string literal...
+./Q3_run.sh: line 7:  8672 Segmentation fault      ./Q3_segfault $m
+exit status 139 (139 = 128 + SIGSEGV(11))
+--- stack ---
+infinite recursion, stack overflow...
+./Q3_run.sh: line 7:  8674 Segmentation fault      ./Q3_segfault $m
+exit status 139 (139 = 128 + SIGSEGV(11))
+--- with a SIGSEGV handler (shows the fault address given by the kernel) ---
+writing to NULL...
+caught signal 11 (SIGSEGV), faulting address (nil), si_code=SEGV_MAPERR (no mapping)
+exit status 139
+
+=== Fragmentation and table sizes ===
+after loading 20 segments:         free   26 KB in  1 holes, largest hole   26 KB, external fragmentation = 1 - largest/free = 0.0%
+after removing 10 (every other):   free  532 KB in 11 holes, largest hole   76 KB, external fragmentation = 1 - largest/free = 85.7%
+try to load one new 120 KB segment: FAILS although total free memory is larger (external fragmentation)
+
+== Table sizes for a program: code 200 KB, data 600 KB, stack 100 KB (4 KB pages, 4 B entries, 8 B segment entries) ==
+pure paging, flat 32-bit table      : 2^20 x 4 B = 4096 KB per process (a 2-level table needs only a 4 KB directory + 1 page-table page(s) of 4 KB = 8 KB)
+pure segmentation                   : 3 segments x 8 B = 24 B (but segments need contiguous memory)
+segmented paging (page table/segment): 24 B + (50 + 150 + 25) page entries x 4 B = 924 B
+average internal fragmentation of segmented paging: about half a page per segment = 3 x 2 KB = 6 KB

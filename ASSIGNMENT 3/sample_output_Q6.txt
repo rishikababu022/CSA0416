@@ -1,0 +1,73 @@
+=== lsblk ===
+NAME  MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+zram0 253:0    0    0B  0 disk 
+vda   254:0    0  256G  0 disk /
+vdb   254:16   0  9.5M  1 disk /opt/rclone
+vdc   254:32   0  752K  1 disk /mnt/skills/public
+vdd   254:48   0  5.9M  1 disk /mnt/skills/examples
+
+=== fdisk -l (needs root) ===
+./Q6_run.sh: line 4: fdisk: command not found
+
+=== /proc/partitions ===
+major minor  #blocks  name
+
+ 254        0  268435456 vda
+ 254       16       9724 vdb
+ 254       32        752 vdc
+ 254       48       5992 vdd
+
+=== swap ===
+Filename				Type		Size		Used		Priority
+               total        used        free      shared  buff/cache   available
+Mem:           3.9Gi       302Mi       3.7Gi        12Mi       131Mi       3.6Gi
+Swap:             0B          0B          0B
+
+=== mounts of real filesystems ===
+Filesystem                                                                        Type         Size  Used Avail Use% Mounted on
+tmpfs                                                                             tmpfs        3.9G  4.0K  3.9G   1% /dev/shm
+/dev/vda                                                                          ext4         252G  6.6G   10G  40% /
+model_tools_unavailable                                                           tmpfs        4.0K     0  4.0K   0% /mnt/sandboxing/model_tools_env/v1/python
+tmpfs                                                                             tmpfs        2.0G     0  2.0G   0% /sys/fs/cgroup
+tmpfs                                                                             tmpfs        1.0M     0  1.0M   0% /run/sandbox-telemetry
+rclone-filestore:claude_chat_01RA8SuabQ53LjLxq7DpmvQW:/mnt/user-data/tool_results fuse.rclone  1.0P     0  1.0P   0% /mnt/user-data/tool_results
+rclone-filestore:claude_chat_01RA8SuabQ53LjLxq7DpmvQW:/mnt/user-data/outputs      fuse.rclone  1.0P     0  1.0P   0% /mnt/user-data/outputs
+
+=== RAID capacity and probability ===
+== Usable capacity of 6 disks of 4 TB (raw 24 TB) ==
+RAID 0  : 24 TB (100%)   survives 0 failures   write cost 1 I/O   read speed ~6x
+RAID 1  : 12 TB (50% as 3 mirrored pairs; one 6-way mirror would give only 4 TB = 17%)
+          pairs: survives 1 failure (2 only if in different pairs), write cost 2 I/Os
+RAID 5  : 20 TB (83%)   survives 1 failure   write cost 4 I/Os (read old data+parity, write new data+parity)
+RAID 6  : 16 TB (67%)   survives 2 failures  write cost 6 I/Os (two parities, extra parity calculation)
+RAID 10 : 12 TB (50%)    survives 1 failure guaranteed, up to 3 (one per mirror pair); write cost 2 I/Os
+
+== Probability of data loss after one disk has failed ==
+assumptions: annual failure rate 3.0%, rebuild time 24 h -> p(a given disk fails during rebuild) = 0.00834%
+RAID 1 (mirror of the failed disk must survive)   : 0.00834%
+RAID 10 (same as RAID 1: only the partner matters) : 0.00834%
+RAID 5 (any of the 5 other disks failing)         : 0.04172%
+RAID 6 (two more of the 5 remaining must fail)    : 0.00000696%
+
+Unrecoverable read error during rebuild (1 error per 1e14 bits), RAID 5 must read 20 TB = 1.60e+14 bits:
+P(at least one URE) = 1-(1-1e-14)^bits = 79.8%  -> large RAID 5 arrays of big disks are risky; RAID 6/10 are safer
+RAID 1/10 rebuild reads only 4 TB: P(URE) = 27.4%
+
+=== Read speed (run on each device if both SSD and HDD exist; set DIR to a directory on that disk) ===
+268435456 bytes (268 MB, 256 MiB) copied, 1.11899 s, 240 MB/s
+sequential read:
+268435456 bytes (268 MB, 256 MiB) copied, 0.109318 s, 2.5 GB/s
+rotational flag per disk (0 = SSD, 1 = HDD):
+/sys/block/loop0/queue/rotational: 0
+/sys/block/loop1/queue/rotational: 0
+/sys/block/loop2/queue/rotational: 0
+/sys/block/loop3/queue/rotational: 0
+/sys/block/loop4/queue/rotational: 0
+/sys/block/loop5/queue/rotational: 0
+/sys/block/loop6/queue/rotational: 0
+/sys/block/loop7/queue/rotational: 0
+/sys/block/vda/queue/rotational: 1
+/sys/block/vdb/queue/rotational: 1
+/sys/block/vdc/queue/rotational: 1
+/sys/block/vdd/queue/rotational: 1
+/sys/block/zram0/queue/rotational: 0
