@@ -1,7 +1,0 @@
-Pen drive (Windows + Linux, files > 4 GiB):  sudo mkfs.exfat -n PENDRIVE /dev/sdX1
-Linux database server (journal, XFS):         sudo mkfs.xfs -L dbdata /dev/sdX1
-   (or ext4 ordered):                         sudo mkfs.ext4 -L dbdata -O has_journal /dev/sdX1 ; mount -o data=ordered
-Laptop (Linux):                               sudo mkfs.ext4 -L root /dev/sdX2
-Laptop (Windows) / (macOS):                   NTFS (format from Windows)  /  APFS (Disk Utility)
-Backup server with snapshots (checksums, CoW): sudo mkfs.btrfs -L backup /dev/sdX1 ; btrfs subvolume snapshot -r /backup /backup/.snap-$(date +%F)
-   (or ZFS):                                  sudo zpool create backup /dev/sdX && zfs snapshot backup@$(date +%F)

@@ -1,4 +1,0 @@
-AAAAAA........CCCCC.............  free blocks = 21
-E (14 blocks) contiguous: start -1  (-1 = failed)
-E (14 blocks) indexed: index block 6
-AAAAAAeEEEEEEECCCCCEEEEEEE......

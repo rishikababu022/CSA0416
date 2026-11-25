@@ -1,7 +1,0 @@
-FCFS         53 98 183 37 122 14 124 65 67  -> 640 cylinders
-SSTF         53 65 67 37 14 98 122 124 183  -> 236 cylinders
-SCAN(down)   53 37 14 0 65 67 98 122 124 183  -> 236 cylinders
-C-SCAN       53 65 67 98 122 124 183 199 0 14 37  -> 382 cylinders (183 if the return jump of 199 is not counted)
-LOOK(down)   53 37 14 65 67 98 122 124 183  -> 208 cylinders
-LOOK(up)     53 65 67 98 122 124 183 37 14  -> 299 cylinders
-C-LOOK       53 65 67 98 122 124 183 14 37  -> 322 cylinders (153 if the return jump of 169 is not counted)

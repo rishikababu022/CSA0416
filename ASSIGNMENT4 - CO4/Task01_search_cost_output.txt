@@ -1,6 +1,0 @@
-12000 students, 20000 random look-ups
-organisation                       avg compares total time (s)
-flat directory, linear scan              6013.5          0.293
-dept/year tree (approx. compares)         158.8          0.218
-hashed directory                           24.4          0.002
-(the tree timing includes the filter loop used to model small directories, so use the compare counts)
