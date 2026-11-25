@@ -1,6 +1,0 @@
-EXAMPLE ONLY: placeholder prices (see the file header). Peak nodes taken from the capacity example.
-Own servers sized for result day (3 servers)       :        4,050 USD/year
-Cloud, fixed VMs sized for result day, 24x7              :        2,628 USD/year
-Cloud, autoscaled (2 base, 3 for 12 h/year) :        1,753 USD/year
-Hybrid (own base servers, burst to cloud on result day)  :        2,701 USD/year
-Idle share of fixed capacity: 33.3% of node-hours are not needed
