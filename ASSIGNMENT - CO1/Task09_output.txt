@@ -1,3 +1,0 @@
-Interrupt-driven: 131,072,000 interrupts, CPU time = 262.14 s, buffer = 4 B (one word)
-DMA             : 8,000 interrupts, CPU time = 0.0560 s, buffer = 64 KB (per block)
-Ratio of interrupts: 16384x fewer with DMA

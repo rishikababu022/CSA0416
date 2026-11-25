@@ -1,3 +1,0 @@
-1000 processes (fork+wait)       : 0.5674 s  (567.4 us each)
-1000 threads (create+join)       : 0.0196 s  (19.6 us each)
-processes / threads time ratio : 29.0x

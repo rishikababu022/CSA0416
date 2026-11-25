@@ -1,2 +1,0 @@
-fork+exec : 1000 commands in 0.6616 s (661.6 us each)
-posix_spawn: 1000 commands in 0.6127 s (612.7 us each)
